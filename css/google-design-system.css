@@ -1,0 +1,343 @@
+/**
+ * Google Material Design 3 / Google Workspace Design System
+ * Official Google Brand Guidelines Tokens
+ */
+
+:root {
+  /* Google Core Colors */
+  --google-blue: #1a73e8;
+  --google-blue-hover: #1557b0;
+  --google-blue-surface: #e8f0fe;
+  --google-blue-text: #174ea6;
+
+  --google-red: #ea4335;
+  --google-red-hover: #d93025;
+  --google-red-surface: #fce8e6;
+  --google-red-text: #c5221f;
+
+  --google-yellow: #fbbc04;
+  --google-yellow-hover: #f29900;
+  --google-yellow-surface: #fef7e0;
+  --google-yellow-text: #b06000;
+
+  --google-green: #34a853;
+  --google-green-hover: #1e8e3e;
+  --google-green-surface: #e6f4ea;
+  --google-green-text: #137333;
+
+  /* Workspace Neutrals */
+  --google-surface-bg: #f8fafd;
+  --google-surface-card: #ffffff;
+  --google-surface-hover: #f1f3f4;
+  --google-surface-active: #e8eaed;
+  --google-surface-tonal: #edf2fc;
+
+  --google-text-primary: #202124;
+  --google-text-secondary: #5f6368;
+  --google-text-disabled: #80868b;
+  --google-text-on-primary: #ffffff;
+
+  --google-border: #dadce0;
+  --google-border-light: #f1f3f4;
+  --google-divider: #e8eaed;
+
+  /* Typography */
+  --font-family-google: 'Google Sans', 'Google Sans Display', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-body: 'Roboto', 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-code: 'Roboto Mono', 'SF Pro Mono', Menlo, Consolas, monospace;
+
+  /* Elevations */
+  --elevation-0: none;
+  --elevation-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+  --elevation-2: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+  --elevation-3: 0 4px 8px 3px rgba(60,64,67,0.15), 0 1px 3px rgba(60,64,67,0.3);
+  --elevation-4: 0 6px 10px 4px rgba(60,64,67,0.15), 0 2px 3px rgba(60,64,67,0.3);
+  --elevation-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --elevation-card-hover: 0 4px 12px rgba(60,64,67,0.12), 0 1px 3px rgba(60,64,67,0.08);
+
+  /* Shape tokens */
+  --shape-corner-xs: 4px;
+  --shape-corner-sm: 8px;
+  --shape-corner-md: 12px;
+  --shape-corner-lg: 16px;
+  --shape-corner-xl: 24px;
+  --shape-corner-full: 9999px;
+
+  /* Layout dimensions */
+  --topbar-height: 64px;
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 72px;
+
+  /* Transitions */
+  --motion-duration-short: 150ms;
+  --motion-duration-medium: 250ms;
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Reset and Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--google-surface-bg);
+  color: var(--google-text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-google);
+  font-weight: 500;
+  color: var(--google-text-primary);
+}
+
+button {
+  font-family: var(--font-family-google);
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+  transition: all var(--motion-duration-short) var(--motion-easing-standard);
+}
+
+a {
+  color: var(--google-blue);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+input, textarea, select {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  color: var(--google-text-primary);
+  outline: none;
+}
+
+/* Material Symbols Rounded standard styling */
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
+}
+
+.material-symbols-rounded.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Google Buttons */
+.g-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--shape-corner-full);
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+.g-btn-primary {
+  background-color: var(--google-blue);
+  color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+}
+.g-btn-primary:hover {
+  background-color: var(--google-blue-hover);
+  box-shadow: 0 1px 3px 1px rgba(60,64,67,0.2);
+}
+
+.g-btn-tonal {
+  background-color: var(--google-blue-surface);
+  color: var(--google-blue-text);
+}
+.g-btn-tonal:hover {
+  background-color: #d2e3fc;
+}
+
+.g-btn-outlined {
+  border: 1px solid var(--google-border);
+  background-color: #ffffff;
+  color: var(--google-text-secondary);
+}
+.g-btn-outlined:hover {
+  background-color: var(--google-surface-hover);
+  color: var(--google-text-primary);
+  border-color: #c4c7c5;
+}
+
+.g-btn-text {
+  color: var(--google-blue);
+  padding: 8px 12px;
+}
+.g-btn-text:hover {
+  background-color: var(--google-blue-surface);
+}
+
+.g-btn-green {
+  background-color: var(--google-green);
+  color: #ffffff;
+}
+.g-btn-green:hover {
+  background-color: var(--google-green-hover);
+}
+
+.g-btn-red {
+  background-color: var(--google-red);
+  color: #ffffff;
+}
+.g-btn-red:hover {
+  background-color: var(--google-red-hover);
+}
+
+/* Icon Buttons */
+.g-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--google-text-secondary);
+  background: transparent;
+}
+.g-icon-btn:hover {
+  background-color: rgba(60,64,67,0.08);
+  color: var(--google-text-primary);
+}
+.g-icon-btn:active {
+  background-color: rgba(60,64,67,0.15);
+}
+
+/* Google Chips */
+.g-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--shape-corner-full);
+  font-size: 13px;
+  font-weight: 500;
+  background-color: var(--google-surface-hover);
+  color: var(--google-text-secondary);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--motion-duration-short);
+}
+.g-chip:hover {
+  background-color: var(--google-surface-active);
+  color: var(--google-text-primary);
+}
+.g-chip.active {
+  background-color: var(--google-blue-surface);
+  color: var(--google-blue-text);
+  border-color: #c2e7ff;
+}
+
+/* Google Cards */
+.g-card {
+  background: var(--google-surface-card);
+  border-radius: var(--shape-corner-lg);
+  border: 1px solid var(--google-border);
+  box-shadow: var(--elevation-card);
+  transition: box-shadow var(--motion-duration-medium) var(--motion-easing-standard),
+              border-color var(--motion-duration-medium);
+}
+.g-card-hoverable:hover {
+  box-shadow: var(--elevation-card-hover);
+  border-color: #c4c7c5;
+}
+
+/* Floating Action Button (FAB) */
+.g-fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: var(--shape-corner-xl);
+  background-color: #c2e7ff;
+  color: #001d35;
+  box-shadow: var(--elevation-2);
+  font-weight: 500;
+  font-size: 14px;
+  transition: all var(--motion-duration-medium);
+}
+.g-fab:hover {
+  box-shadow: var(--elevation-3);
+  background-color: #b3defa;
+}
+
+/* Modals & Backdrops */
+.g-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(32, 33, 36, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-duration-medium) ease;
+}
+.g-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.g-modal {
+  background: var(--google-surface-card);
+  border-radius: var(--shape-corner-xl);
+  box-shadow: var(--elevation-4);
+  max-width: 680px;
+  width: 90%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform var(--motion-duration-medium) var(--motion-easing-standard);
+}
+.g-modal-backdrop.open .g-modal {
+  transform: scale(1);
+}
+
+.g-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--google-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.g-modal-title {
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.g-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+.g-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--google-divider);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: #fafbfc;
+}
