@@ -12,17 +12,20 @@ const Components = {
           <div class="hero-meta-row">
             <div class="hero-pills">
               <span class="hero-pill">${course.code}</span>
-              <span class="hero-pill">${course.year}</span>
+              <span class="hero-pill">${course.courseLevel || course.year}</span>
               <span class="hero-pill">${course.semester}</span>
             </div>
-            ${course.meetActive ? `
-              <div class="live-indicator-pill">
-                <span class="live-pulse-dot"></span>
-                <span>CLASE EN DIRECTO (MEET)</span>
-              </div>
-            ` : `
-              <span class="hero-pill" style="opacity: 0.9;">Próxima: ${course.stats.nextClass}</span>
-            `}
+
+            <div class="hero-schedule-pills">
+              ${course.meetActive ? `
+                <div class="live-indicator-pill">
+                  <span class="live-pulse-dot"></span>
+                  <span>EN DIRECTO (MEET)</span>
+                </div>
+              ` : ''}
+              ${course.stats.nextTheory ? `<span class="hero-pill">Teoría: ${course.stats.nextTheory}</span>` : ''}
+              ${course.stats.nextPractice ? `<span class="hero-pill">Prácticas: ${course.stats.nextPractice}</span>` : ''}
+            </div>
           </div>
 
           <div class="hero-title-row">
@@ -33,8 +36,12 @@ const Components = {
 
         <div class="hero-actions-row">
           <div class="hero-teacher-info">
-            <span class="material-symbols-rounded">person</span>
-            <span><strong>${course.professor}</strong> • ${course.department}</span>
+            <img class="hero-teacher-avatar" src="${course.professorAvatar}" alt="${course.professor}">
+            <div class="hero-teacher-meta">
+              <strong class="hero-teacher-name">${course.professor}</strong>
+              <span class="hero-teacher-sep">•</span>
+              <span class="hero-teacher-dept">${course.department}</span>
+            </div>
           </div>
 
           <div class="hero-quick-buttons">
@@ -57,32 +64,33 @@ const Components = {
   },
 
   // Renders the Secondary Tabs (Google Classroom style)
-  renderCourseTabs(activeTab, stats) {
+  renderCourseTabs(activeTab, course) {
+    const stats = course.stats;
     return `
       <nav class="course-tabs-nav" aria-label="Navegación del curso">
+        <button class="course-tab-btn ${activeTab === 'classroom' ? 'active' : ''}" onclick="App.switchTab('classroom')">
+          <span class="material-symbols-rounded">school</span>
+          <span>Classroom</span>
+        </button>
         <button class="course-tab-btn ${activeTab === 'reddit' ? 'active' : ''}" onclick="App.switchTab('reddit')">
           <span class="material-symbols-rounded">forum</span>
-          <span>Foro & Reddit</span>
+          <span>Reddit</span>
           <span class="tab-counter-badge">${stats.forumPosts}</span>
         </button>
         <button class="course-tab-btn ${activeTab === 'apuntes' ? 'active' : ''}" onclick="App.switchTab('apuntes')">
           <span class="material-symbols-rounded">description</span>
-          <span>Apuntes Wuolah</span>
+          <span>Wuolah / StuDocu</span>
           <span class="tab-counter-badge">${stats.notesCount}</span>
         </button>
-        <button class="course-tab-btn ${activeTab === 'classroom' ? 'active' : ''}" onclick="App.switchTab('classroom')">
-          <span class="material-symbols-rounded">school</span>
-          <span>Classroom LMS</span>
+        <button class="course-tab-btn ${activeTab === 'notebook' ? 'active' : ''}" onclick="App.switchTab('notebook')">
+          <span class="material-symbols-rounded">neurology</span>
+          <span>NotebookLM</span>
+          <span class="tab-counter-badge" style="background:#f3e8fd; color:#6200ea;">IA Activa</span>
         </button>
         <button class="course-tab-btn ${activeTab === 'meet' ? 'active' : ''}" onclick="App.switchTab('meet')">
           <span class="material-symbols-rounded">videocam</span>
           <span>Google Meet</span>
-          ${stats.nextClass.includes('Directo') ? '<span class="live-pulse-dot" style="margin-left: 4px;"></span>' : ''}
-        </button>
-        <button class="course-tab-btn ${activeTab === 'notebook' ? 'active' : ''}" onclick="App.switchTab('notebook')">
-          <span class="material-symbols-rounded">neurology</span>
-          <span>Agente NotebookLM</span>
-          <span class="tab-counter-badge" style="background:#f3e8fd; color:#6200ea;">IA Activa</span>
+          ${course.meetActive ? '<span class="live-pulse-dot" style="margin-left: 4px;"></span>' : ''}
         </button>
       </nav>
     `;

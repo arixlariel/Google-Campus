@@ -7,7 +7,7 @@ const App = {
   state: {
     currentProgramId: "ing-informatica",   // Default active degree/program
     currentCourseId: "estructuras-datos",  // Default active course: EDA (2º año)
-    currentTab: "reddit",                  // Default tab: Reddit forum
+    currentTab: "classroom",               // Default tab: Classroom (first tab)
     currentAgentId: "tutor-eda",           // Default AI agent
     redditFilter: "ALL",
     isPlayingAudioDeepDive: false,
@@ -23,7 +23,6 @@ const App = {
   init() {
     this.renderSidebarCourses();
     this.renderCurrentView();
-    this.syncSidebarTabActive();
     this.setupEventListeners();
   },
 
@@ -57,10 +56,9 @@ const App = {
     if (courses.length > 0 && !courses.some(c => c.id === this.state.currentCourseId)) {
       const nextCourse = courses[0];
       this.state.currentCourseId = nextCourse.id;
-      this.state.currentTab = "reddit";
+      this.state.currentTab = "classroom";
       const defaultAgent = nextCourse.agents?.[0];
       this.state.currentAgentId = defaultAgent ? defaultAgent.id : null;
-      this.syncSidebarTabActive();
     }
 
     this.renderSidebarCourses();
@@ -88,13 +86,12 @@ const App = {
       if (selectEl) selectEl.value = course.programId;
     }
     this.state.currentCourseId = courseId;
-    this.state.currentTab = "reddit"; // Reset to forum tab on switch
+    this.state.currentTab = "classroom"; // Reset to first tab on switch
     const defaultAgent = course.agents[0];
     this.state.currentAgentId = defaultAgent ? defaultAgent.id : null;
 
     this.renderSidebarCourses();
     this.renderCurrentView();
-    this.syncSidebarTabActive();
 
     // Close drawer automatically on mobile
     if (window.innerWidth <= 1024) {
@@ -106,22 +103,14 @@ const App = {
     this.showToast(`Cambiado a: ${CAMPUS_DATA.courses[courseId].name}`);
   },
 
-  // Switch Tab within Course (Reddit, Apuntes, Classroom, Meet, NotebookLM)
+  // Switch Tab within Course (Classroom, Reddit, Wuolah/StuDocu, NotebookLM, Meet)
   switchTab(tabName) {
     this.state.currentTab = tabName;
-    this.syncSidebarTabActive();
     this.renderCurrentView();
 
     if (window.innerWidth <= 1024) {
       document.getElementById("campus-sidebar")?.classList.remove("open");
     }
-  },
-
-  syncSidebarTabActive() {
-    const navItems = document.querySelectorAll("#sidebar-tabs-list .sidebar-nav-item");
-    navItems.forEach(item => {
-      item.classList.toggle("active", item.dataset.tab === this.state.currentTab);
-    });
   },
 
   // Renders the Course List in Sidebar (dot color by year, no year text badge)
@@ -179,12 +168,12 @@ const App = {
         );
         break;
       default:
-        contentHtml = Components.renderRedditSection(course);
+        contentHtml = Components.renderClassroomSection(course);
     }
 
     mainEl.innerHTML = `
       ${Components.renderCourseHero(course)}
-      ${Components.renderCourseTabs(this.state.currentTab, course.stats)}
+      ${Components.renderCourseTabs(this.state.currentTab, course)}
       <div class="tab-panel active">
         ${contentHtml}
       </div>
