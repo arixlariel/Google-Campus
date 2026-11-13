@@ -45,17 +45,21 @@ const Components = {
           </div>
 
           <div class="hero-quick-buttons">
-            <button class="hero-action-btn" onclick="App.openMeetModal()">
-              <span class="material-symbols-rounded" style="color: #00ac47;">videocam</span>
-              <span>Aula Meet</span>
+            <button class="hero-action-btn primary-gmail-btn" onclick="App.openGmailModal()" title="Redactar correo en Gmail para ${course.professor} (${course.professorEmail})">
+              <img src="assets/icons/gmail-icon.svg" width="16" height="16" alt="Gmail">
+              <span>Enviar Gmail</span>
             </button>
-            <button class="hero-action-btn" onclick="App.switchTab('notebook')">
-              <span class="material-symbols-rounded" style="color: #7c4dff;">auto_awesome</span>
-              <span>Cuaderno IA</span>
+            <button class="hero-action-btn" onclick="App.openCourseInfoModal('tutoria')" title="Solicitar tutoría en Google Calendar (${course.officeLocation})">
+              <img src="assets/icons/calendar-icon.svg" width="16" height="16" alt="Calendar">
+              <span>Reservar Tutoría</span>
             </button>
-            <button class="hero-action-btn" onclick="App.openUploadApunteModal()">
-              <span class="material-symbols-rounded" style="color: #ea4335;">upload_file</span>
-              <span>Subir Apunte</span>
+            <button class="hero-action-btn" onclick="App.openCourseInfoModal('syllabus')" title="Consultar Guía Docente Oficial UHU y criterios de evaluación">
+              <span class="material-symbols-rounded" style="font-size: 17px; color: #1a73e8;">menu_book</span>
+              <span>Guía Docente</span>
+            </button>
+            <button class="hero-action-btn" onclick="App.openCourseInfoModal('grades')" title="Ver desglose de calificaciones y evaluación continua">
+              <span class="material-symbols-rounded" style="font-size: 17px; color: #137333;">fact_check</span>
+              <span>Calificaciones</span>
             </button>
           </div>
         </div>
@@ -63,34 +67,42 @@ const Components = {
     `;
   },
 
-  // Renders the Secondary Tabs (Google Classroom style)
+  // Renders the Secondary Tabs (Google Classroom style) with unread counts on EVERY tab
   renderCourseTabs(activeTab, course) {
-    const stats = course.stats;
+    const unread = course.unread || { classroom: 2, reddit: 5, apuntes: 3, notebook: 1, meet: 1 };
+    const uClassroom = unread.classroom ?? 2;
+    const uReddit = unread.reddit ?? 4;
+    const uApuntes = unread.apuntes ?? 3;
+    const uNotebook = unread.notebook ?? 2;
+    const uMeet = (unread.meet && unread.meet > 0) ? unread.meet : 1;
+
     return `
       <nav class="course-tabs-nav" aria-label="Navegación del curso">
-        <button class="course-tab-btn ${activeTab === 'classroom' ? 'active' : ''}" onclick="App.switchTab('classroom')">
+        <button class="course-tab-btn ${activeTab === 'classroom' ? 'active' : ''}" onclick="App.switchTab('classroom')" title="${uClassroom} elementos sin abrir en Classroom">
           <span class="material-symbols-rounded">school</span>
           <span>Classroom</span>
+          <span class="tab-counter-badge unread" title="${uClassroom} sin abrir">${uClassroom}</span>
         </button>
-        <button class="course-tab-btn ${activeTab === 'reddit' ? 'active' : ''}" onclick="App.switchTab('reddit')">
+        <button class="course-tab-btn ${activeTab === 'reddit' ? 'active' : ''}" onclick="App.switchTab('reddit')" title="${uReddit} hilos nuevos sin abrir en Reddit">
           <span class="material-symbols-rounded">forum</span>
           <span>Reddit</span>
-          <span class="tab-counter-badge">${stats.forumPosts}</span>
+          <span class="tab-counter-badge unread" title="${uReddit} sin abrir">${uReddit}</span>
         </button>
-        <button class="course-tab-btn ${activeTab === 'apuntes' ? 'active' : ''}" onclick="App.switchTab('apuntes')">
+        <button class="course-tab-btn ${activeTab === 'apuntes' ? 'active' : ''}" onclick="App.switchTab('apuntes')" title="${uApuntes} apuntes nuevos sin abrir en Wuolah / StuDocu">
           <span class="material-symbols-rounded">description</span>
           <span>Wuolah / StuDocu</span>
-          <span class="tab-counter-badge">${stats.notesCount}</span>
+          <span class="tab-counter-badge unread" title="${uApuntes} sin abrir">${uApuntes}</span>
         </button>
-        <button class="course-tab-btn ${activeTab === 'notebook' ? 'active' : ''}" onclick="App.switchTab('notebook')">
+        <button class="course-tab-btn ${activeTab === 'notebook' ? 'active' : ''}" onclick="App.switchTab('notebook')" title="${uNotebook} actualizaciones sin abrir en NotebookLM">
           <span class="material-symbols-rounded">neurology</span>
           <span>NotebookLM</span>
-          <span class="tab-counter-badge" style="background:#f3e8fd; color:#6200ea;">IA Activa</span>
+          <span class="tab-counter-badge unread" title="${uNotebook} sin abrir">${uNotebook}</span>
         </button>
-        <button class="course-tab-btn ${activeTab === 'meet' ? 'active' : ''}" onclick="App.switchTab('meet')">
+        <button class="course-tab-btn ${activeTab === 'meet' ? 'active' : ''}" onclick="App.switchTab('meet')" title="${uMeet} grabaciones o sesiones sin abrir en Google Meet">
           <span class="material-symbols-rounded">videocam</span>
           <span>Google Meet</span>
-          ${course.meetActive ? '<span class="live-pulse-dot" style="margin-left: 4px;"></span>' : ''}
+          <span class="tab-counter-badge unread" title="${uMeet} sin abrir">${uMeet}</span>
+          ${course.meetActive ? '<span class="live-pulse-dot" style="margin-left: 2px;"></span>' : ''}
         </button>
       </nav>
     `;
@@ -113,7 +125,7 @@ const Components = {
           <!-- Quick Compose trigger -->
           <div class="reddit-compose-trigger" onclick="App.openCreatePostModal()">
             <img src="${CAMPUS_DATA.currentUser.avatar}" alt="Avatar">
-            <div class="compose-fake-input">¿Dudas, memes o apuntes sobre ${course.shortName}? Publica en la comunidad...</div>
+            <div class="compose-fake-input">¿Dudas, memes o apuntes sobre ${course.shortName}? Publica en la comunidad (+10 pts)...</div>
             <button class="g-icon-btn"><span class="material-symbols-rounded">image</span></button>
             <button class="g-icon-btn"><span class="material-symbols-rounded">poll</span></button>
             <button class="g-icon-btn"><span class="material-symbols-rounded">code</span></button>
@@ -122,7 +134,7 @@ const Components = {
           <!-- Reddit Filter Chips -->
           <div class="reddit-filter-bar">
             <button class="g-chip ${filter === 'ALL' ? 'active' : ''}" onclick="App.filterReddit('ALL')">
-              <span class="material-symbols-rounded">feed</span> Todos
+              <span class="material-symbols-rounded">feed</span> Todos (${posts.length})
             </button>
             <button class="g-chip ${filter === 'TOP' ? 'active' : ''}" onclick="App.filterReddit('TOP')">
               <span class="material-symbols-rounded">local_fire_department</span> 🔥 Más votados
@@ -142,29 +154,29 @@ const Components = {
         <!-- Reddit Sidebar -->
         <div class="reddit-sidebar">
           <div class="g-card rules-card">
-            <h3><span class="material-symbols-rounded" style="color: var(--google-blue);">shield</span> Normas de la Comunidad</h3>
+            <h3><span class="material-symbols-rounded" style="color: var(--google-blue);">shield</span> Normas de r/${course.shortName}_UHU</h3>
             <ol class="rules-list">
-              <li>Respeto mutuo y código de conducta GDGoC.</li>
-              <li>No publicar soluciones directas durante exámenes oficiales.</li>
-              <li>Usa los flairs adecuados (ej: [MEME], [DUDA]).</li>
-              <li>El profesorado participa en este foro para resolver dudas de laboratorio.</li>
+              <li>Respeto mutuo y código de conducta universitario UHU & GDGoC.</li>
+              <li>No publicar código íntegro de prácticas evaluables antes de la fecha límite.</li>
+              <li>Usa los flairs ([MEME], [DUDA], [APUNTES]) para mantener el orden.</li>
+              <li>Las respuestas validadas por el profesor otorgan <strong>+25 Campus Points</strong>.</li>
             </ol>
           </div>
 
           <div class="g-card moderators-card">
-            <h3>Moderadores de la Asignatura</h3>
+            <h3>Moderación del Canal</h3>
+            <div class="mod-item">
+              <img src="${course.professorAvatar}" alt="Mod">
+              <div>
+                <strong>${course.professor}</strong>
+                <div style="font-size:11px; color:#137333; font-weight:600;">Profesor Responsable (UHU)</div>
+              </div>
+            </div>
             <div class="mod-item">
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60" alt="Mod">
               <div>
                 <strong>Ariel B.</strong> (GDGoC Lead)
-                <div style="font-size:11px; color:#5f6368;">Estudiante Verificado</div>
-              </div>
-            </div>
-            <div class="mod-item">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60" alt="Mod">
-              <div>
-                <strong>${course.professor}</strong>
-                <div style="font-size:11px; color:#137333; font-weight:600;">Catedrático Oficial</div>
+                <div style="font-size:11px; color:#5f6368;">Delegación & Moderador</div>
               </div>
             </div>
           </div>
@@ -230,7 +242,7 @@ const Components = {
   },
 
   // Renders Wuolah-style Apuntes Section
-  renderApuntesSection(course, filter = 'ALL') {
+  renderApuntesSection(course) {
     const apuntes = course.apuntes || [];
 
     return `
@@ -238,22 +250,28 @@ const Components = {
         <!-- Gamification Banner -->
         <div class="apuntes-banner">
           <div class="apuntes-banner-content">
-            <h3><span class="material-symbols-rounded">monetization_on</span> Gana Campus Points y Swag de Google compartiendo tus apuntes</h3>
-            <p>Cada vez que un compañero descargue tus notas verificadas recibes créditos canjeables por Google Cloud Credits y ventajas en el club GDGoC.</p>
+            <h3><span class="material-symbols-rounded">monetization_on</span> Sube tus apuntes de ${course.shortName} y gana Campus Points</h3>
+            <p>Tus apuntes verificados suman puntos canjeables por impresiones gratis en la copistería de la ETSI, créditos de Google Cloud y cafetería del Campus El Carmen.</p>
           </div>
-          <button class="g-btn g-btn-primary" onclick="App.openUploadApunteModal()">
-            <span class="material-symbols-rounded">upload</span>
-            <span>Subir mis Apuntes (+50 pts)</span>
-          </button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="g-btn g-btn-outlined" onclick="App.openPointsModal()">
+              <span class="material-symbols-rounded">redeem</span>
+              <span>Ver Recompensas</span>
+            </button>
+            <button class="g-btn g-btn-primary" onclick="App.openUploadApunteModal()">
+              <span class="material-symbols-rounded">upload</span>
+              <span>Subir Apuntes (+50 pts)</span>
+            </button>
+          </div>
         </div>
 
         <!-- Filter Chips -->
         <div class="reddit-filter-bar">
           <button class="g-chip active"><span class="material-symbols-rounded">all_inclusive</span> Todos (${apuntes.length})</button>
           <button class="g-chip"><span class="material-symbols-rounded">menu_book</span> Teoría Completa</button>
-          <button class="g-chip"><span class="material-symbols-rounded">biotech</span> Prácticas & Labs</button>
-          <button class="g-chip"><span class="material-symbols-rounded">quiz</span> Exámenes Resueltos</button>
-          <button class="g-chip"><span class="material-symbols-rounded">bolt</span> Chuletas Resumen</button>
+          <button class="g-chip"><span class="material-symbols-rounded">biotech</span> Guiones de Prácticas</button>
+          <button class="g-chip"><span class="material-symbols-rounded">quiz</span> Exámenes UHU Resueltos</button>
+          <button class="g-chip"><span class="material-symbols-rounded">bolt</span> Resúmenes & Chuletas</button>
         </div>
 
         <!-- Apuntes Grid -->
@@ -283,7 +301,7 @@ const Components = {
                 <img src="${item.authorAvatar}" alt="${item.author}">
                 <div>
                   <strong>${item.author}</strong>
-                  <div style="font-size:11px; color:#5f6368;">${item.date} • Verificado</div>
+                  <div style="font-size:11px; color:#5f6368;">${item.date} • Indexado en NotebookLM</div>
                 </div>
               </div>
 
@@ -314,16 +332,16 @@ const Components = {
         <div class="classroom-modules-card">
           <h3 style="font-size: 15px; margin-bottom: 12px; display:flex; align-items:center; gap:8px;">
             <span class="material-symbols-rounded" style="color:var(--google-blue);">folder_open</span>
-            <span>Temario Moodle</span>
+            <span>Temario Oficial UHU</span>
           </h3>
 
           <div class="module-item active">
-            <div><strong>Todos los Temas</strong></div>
-            <small style="color:#5f6368;">Guía docente oficial 2025/26</small>
+            <div><strong>Todos los Bloques</strong></div>
+            <small style="color:#5f6368;">Código ${course.code} • ${course.semester}</small>
           </div>
 
           ${cls.modules.map(mod => `
-            <div class="module-item" onclick="App.showToast('Descargando diapositivas de ${mod.number}...')">
+            <div class="module-item" onclick="App.showToast('Abriendo materiales de ${mod.number} en Google Drive...')">
               <div><strong>${mod.number}</strong>: ${mod.title}</div>
               <small style="color:#5f6368;"><span class="material-symbols-rounded" style="font-size:12px;">slideshow</span> ${mod.slidesCount} diapositivas en Google Drive</small>
             </div>
@@ -335,7 +353,7 @@ const Components = {
           <div class="g-card" style="padding: 20px; background: #fafbfc;">
             <h3 style="font-size: 16px; margin-bottom: 8px; color: #174ea6; display:flex; align-items:center; gap:8px;">
               <span class="material-symbols-rounded">campaign</span>
-              <span>Tablón de Anuncios Oficiales</span>
+              <span>Tablón de Anuncios del Profesorado</span>
             </h3>
             ${cls.announcements.map(ann => `
               <div style="border-top: 1px solid #e8eaed; padding-top: 12px; margin-top: 12px;">
@@ -349,7 +367,7 @@ const Components = {
             `).join('')}
           </div>
 
-          <h3 style="font-size: 16px; font-weight:600; margin-top: 12px;">Tareas y Entregas de Prácticas</h3>
+          <h3 style="font-size: 16px; font-weight:600; margin-top: 12px;">Entregas de Laboratorio y Evaluación Continua</h3>
 
           ${cls.assignments.map(ass => `
             <div class="assignment-card">
@@ -359,9 +377,9 @@ const Components = {
                   <h4>${ass.title}</h4>
                 </div>
                 <div class="assignment-due">
-                  <span>Fecha límite: <strong>${ass.dueDate}</strong></span>
+                  <span>Plazo: <strong>${ass.dueDate}</strong></span>
                   <span>•</span>
-                  <span>Feedback: ${ass.feedback}</span>
+                  <span>${ass.feedback}</span>
                 </div>
               </div>
 
@@ -369,7 +387,7 @@ const Components = {
                 <span class="grade-badge" style="background-color: ${ass.statusColor}18; color: ${ass.statusColor};">
                   ${ass.grade !== '-- / 10' ? `Nota: ${ass.grade}` : ass.status}
                 </span>
-                <button class="g-btn g-btn-tonal" onclick="App.showToast('Tarea ya enviada. Puedes revisar el commit de GitHub entregado.')">
+                <button class="g-btn g-btn-tonal" onclick="App.showToast('Detalle de entrega sincronizado con GitHub Classroom y Moodle UHU.')">
                   Ver Entrega
                 </button>
               </div>
@@ -389,21 +407,21 @@ const Components = {
           <div>
             <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:10px;">
               <span class="live-pulse-dot" style="background:#ffffff;"></span>
-              <span>AULA VIRTUAL EN DIRECTO</span>
+              <span>SALA GOOGLE MEET DE LA ASIGNATURA</span>
             </div>
-            <h2>Sesión Semanal: Laboratorio y Resolución de Dudas</h2>
-            <p>Conectados: <strong>${course.professor}</strong> + 42 estudiantes de la clase.</p>
+            <h2>Aula Virtual y Tutorías Síncronas: ${course.name}</h2>
+            <p>Profesor responsable: <strong>${course.professor}</strong> • Enlace permanente: <code>${course.meetUrl}</code></p>
           </div>
 
           <button class="g-btn" style="background:#ffffff; color:#0b8043; font-weight:700; padding:12px 24px; font-size:15px;" onclick="App.openMeetModal()">
-            <span class="material-symbols-rounded" style="color:#00ac47;">videocam</span>
-            <span>Entrar a Google Meet</span>
+            <img src="assets/icons/meet-icon.svg" width="20" height="20" alt="Meet">
+            <span>Unirse a Google Meet</span>
           </button>
         </div>
 
         <!-- Recorded Lectures -->
         <div>
-          <h3 style="font-size: 18px; margin-bottom: 16px;">Grabaciones de Clases con Capítulos de IA</h3>
+          <h3 style="font-size: 18px; margin-bottom: 16px;">Grabaciones Indexadas con Capítulos Automáticos de Gemini</h3>
           <div class="recordings-grid">
             <div class="recording-card">
               <div class="recording-thumbnail" onclick="App.openMeetModal()">
@@ -412,12 +430,12 @@ const Components = {
                 <span class="video-duration">1h 24m</span>
               </div>
               <div class="recording-details">
-                <h4>Clase 12: Grafos, Algoritmo de Dijkstra y Bellman-Ford</h4>
-                <div style="font-size:12px; color:#5f6368;">Impartida el 8 de Noviembre • 108 visualizaciones</div>
+                <h4>Sesión Magistral: Resolución de Problemas de Examen (${course.shortName})</h4>
+                <div style="font-size:12px; color:#5f6368;">Grabado en ETSI UHU • Transcripción sincronizada con NotebookLM</div>
                 <div class="recording-chapters">
-                  <span>⏱️ 00:15 - Introducción a caminos mínimos</span>
-                  <span>⏱️ 24:30 - Demostración de Dijkstra con cola de prioridad</span>
-                  <span>⏱️ 55:10 - Resolución de dudas de la práctica 2</span>
+                  <span>⏱️ 00:15 - Repaso de conceptos clave del bloque</span>
+                  <span>⏱️ 24:30 - Resolución paso a paso de ejercicio de examen</span>
+                  <span>⏱️ 55:10 - Dudas sobre la defensa de prácticas</span>
                 </div>
               </div>
             </div>
@@ -429,11 +447,11 @@ const Components = {
                 <span class="video-duration">1h 10m</span>
               </div>
               <div class="recording-details">
-                <h4>Clase 11: Árboles AVL y Rotaciones Dobles</h4>
-                <div style="font-size:12px; color:#5f6368;">Impartida el 4 de Noviembre • 142 visualizaciones</div>
+                <h4>Seminario de Laboratorio: Guion Práctico y Casos de Prueba</h4>
+                <div style="font-size:12px; color:#5f6368;">Grabado en Laboratorio ETSI • Disponible en Google Drive</div>
                 <div class="recording-chapters">
-                  <span>⏱️ 02:00 - Rebalanceo tras inserción</span>
-                  <span>⏱️ 38:20 - Implementación en C++ con punteros</span>
+                  <span>⏱️ 02:00 - Configuración del entorno del laboratorio</span>
+                  <span>⏱️ 38:20 - Criterios de corrección y pruebas límite</span>
                 </div>
               </div>
             </div>
@@ -454,49 +472,49 @@ const Components = {
         <div class="notebook-sources-panel">
           <div class="sources-header">
             <h3 style="font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px;">
-              <span class="material-symbols-rounded" style="color:#7c4dff;">source</span>
+              <img src="assets/icons/notebooklm-icon.svg" width="20" height="20" alt="NotebookLM">
               <span>Fuentes del Cuaderno</span>
             </h3>
-            <span class="g-chip" style="font-size:11px; padding:2px 8px;">3 Fuentes</span>
+            <span class="g-chip" style="font-size:11px; padding:2px 8px;">Sincronizado</span>
           </div>
 
           <div style="display:flex; flex-direction:column; gap:8px;">
             <div class="source-file-item">
               <span class="material-symbols-rounded" style="color:#ea4335;">picture_as_pdf</span>
               <div>
-                <strong>Diapositivas_Oficiales_Tema1-4.pdf</strong>
-                <div style="font-size:11px; color:#5f6368;">240 páginas • Indexado</div>
+                <strong>Diapositivas_${course.shortName}_UHU.pdf</strong>
+                <div style="font-size:11px; color:#5f6368;">Material oficial de ${course.professor}</div>
               </div>
             </div>
             <div class="source-file-item">
               <span class="material-symbols-rounded" style="color:#1a73e8;">description</span>
               <div>
-                <strong>Apuntes_Laura_Gomez_Oro.pdf</strong>
-                <div style="font-size:11px; color:#5f6368;">36 páginas • Indexado</div>
+                <strong>Mejores_Apuntes_Wuolah_${course.shortName}.pdf</strong>
+                <div style="font-size:11px; color:#5f6368;">Apuntes verificados por la comunidad</div>
               </div>
             </div>
             <div class="source-file-item">
               <span class="material-symbols-rounded" style="color:#34a853;">code</span>
               <div>
-                <strong>Repositorio_Practicas_C++.zip</strong>
-                <div style="font-size:11px; color:#5f6368;">Código del curso indexado</div>
+                <strong>Examenes_y_Practicas_${course.code}.zip</strong>
+                <div style="font-size:11px; color:#5f6368;">Histórico de convocatorias ETSI UHU</div>
               </div>
             </div>
           </div>
 
-          <button class="g-btn g-btn-outlined" style="width:100%;" onclick="App.showToast('Arrastra cualquier PDF de la asignatura para incorporarlo al contexto del agente.')">
+          <button class="g-btn g-btn-outlined" style="width:100%;" onclick="App.showToast('Puedes añadir tus propios PDFs o apuntes de Drive al contexto del Agente (+10 Campus Points).')">
             <span class="material-symbols-rounded">add</span>
-            <span>Añadir Fuente al Cuaderno</span>
+            <span>Añadir Fuente al Cuaderno (+10 pts)</span>
           </button>
 
           <!-- Audio Deep Dive Player Widget -->
           <div class="audio-deepdive-card">
             <h4>
               <span class="material-symbols-rounded" style="color:#8ab4f8;">podcasts</span>
-              <span>Deep Dive de Audio (NotebookLM)</span>
+              <span>Audio Overview (NotebookLM)</span>
             </h4>
             <p style="font-size:12px; opacity:0.85; line-height:1.4;">
-              Resumen en podcast de 5 min con dos voces de IA debatiendo sobre ${course.shortName}.
+              Podcast generado por IA de 6 min donde dos voces repasan los puntos clave de examen de ${course.shortName}.
             </p>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
               <button class="g-btn" style="background:#8ab4f8; color:#041e49; font-weight:600; padding:6px 14px; font-size:12px;" onclick="App.toggleAudioDeepDive()">
@@ -543,8 +561,8 @@ const Components = {
                 <span class="material-symbols-rounded">${activeAgent.avatarIcon}</span>
               </div>
               <div class="chat-bubble-content">
-                <p>¡Hola, Ariel! Soy tu <strong>${activeAgent.name}</strong> para <em>${course.name}</em>.</p>
-                <p style="margin-top:6px;">He indexado todas las diapositivas de clase, los apuntes de la comunidad y los exámenes anteriores. ¿En qué duda puedo ayudarte hoy?</p>
+                <p>¡Hola, Ariel! Soy tu <strong>${activeAgent.name}</strong> para <em>${course.name}</em> (${course.code}).</p>
+                <p style="margin-top:6px;">${activeAgent.systemGreeting || 'He indexado todas las diapositivas de clase, los apuntes de Wuolah/StuDocu y los exámenes anteriores de la UHU. ¿En qué duda puedo ayudarte hoy?'}</p>
               </div>
             </div>
 
@@ -569,7 +587,7 @@ const Components = {
 
           <!-- Chat Input -->
           <div class="chat-input-wrapper">
-            <input type="text" id="ai-chat-input" placeholder="Pregunta a tu Agente de ${course.shortName} con referencias de clase..." onkeydown="if(event.key==='Enter') App.submitChatInput()">
+            <input type="text" id="ai-chat-input" placeholder="Pregunta al cuaderno de ${course.shortName} citando diapositivas de clase..." onkeydown="if(event.key==='Enter') App.submitChatInput()">
             <button class="g-btn g-btn-primary" onclick="App.submitChatInput()">
               <span class="material-symbols-rounded">send</span>
               <span>Preguntar</span>
@@ -580,4 +598,3 @@ const Components = {
     `;
   }
 };
-
