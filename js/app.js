@@ -5,7 +5,8 @@
 
 const App = {
   state: {
-    currentCourseId: "estructuras-datos", // Default active course: EDA (2º año)
+    currentProgramId: "ing-informatica",   // Default active degree/program
+    currentCourseId: "estructuras-datos",  // Default active course: EDA (2º año)
     currentTab: "reddit",                  // Default tab: Reddit forum
     currentAgentId: "tutor-eda",           // Default AI agent
     redditFilter: "ALL",
@@ -22,19 +23,83 @@ const App = {
   init() {
     this.renderSidebarCourses();
     this.renderCurrentView();
+    this.syncSidebarTabActive();
     this.setupEventListeners();
   },
 
-  // Switch Active Course (from 1º, 2º or 3º año)
+  // Toggle Left Sidebar (Desktop collapse & Mobile drawer)
+  toggleSidebar() {
+    const sidebar = document.getElementById("campus-sidebar");
+    const toggleBtn = document.getElementById("menu-toggle-btn");
+    if (!sidebar) return;
+
+    const isMobile = window.innerWidth <= 1024;
+    let isVisible;
+
+    if (isMobile) {
+      sidebar.classList.toggle("open");
+      isVisible = sidebar.classList.contains("open");
+    } else {
+      sidebar.classList.toggle("collapsed");
+      isVisible = !sidebar.classList.contains("collapsed");
+    }
+
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-expanded", String(isVisible));
+    }
+  },
+
+  // Switch Active Degree / Master / Workshop Program
+  switchProgram(programId) {
+    this.state.currentProgramId = programId;
+    const courses = this.getVisibleCourses();
+
+    if (courses.length > 0 && !courses.some(c => c.id === this.state.currentCourseId)) {
+      const nextCourse = courses[0];
+      this.state.currentCourseId = nextCourse.id;
+      this.state.currentTab = "reddit";
+      const defaultAgent = nextCourse.agents?.[0];
+      this.state.currentAgentId = defaultAgent ? defaultAgent.id : null;
+      this.syncSidebarTabActive();
+    }
+
+    this.renderSidebarCourses();
+    this.renderCurrentView();
+
+    const prog = CAMPUS_DATA.programs.find(p => p.id === programId);
+    if (prog) {
+      this.showToast(`Mostrando: ${prog.name}`);
+    }
+  },
+
+  getVisibleCourses() {
+    const allCourses = Object.values(CAMPUS_DATA.courses);
+    if (this.state.currentProgramId === "all") return allCourses;
+    return allCourses.filter(c => c.programId === this.state.currentProgramId);
+  },
+
+  // Switch Active Course
   switchCourse(courseId) {
-    if (!CAMPUS_DATA.courses[courseId]) return;
+    const course = CAMPUS_DATA.courses[courseId];
+    if (!course) return;
+    if (this.state.currentProgramId !== "all" && course.programId !== this.state.currentProgramId) {
+      this.state.currentProgramId = course.programId;
+      const selectEl = document.getElementById("program-select");
+      if (selectEl) selectEl.value = course.programId;
+    }
     this.state.currentCourseId = courseId;
     this.state.currentTab = "reddit"; // Reset to forum tab on switch
-    const defaultAgent = CAMPUS_DATA.courses[courseId].agents[0];
+    const defaultAgent = course.agents[0];
     this.state.currentAgentId = defaultAgent ? defaultAgent.id : null;
 
     this.renderSidebarCourses();
     this.renderCurrentView();
+    this.syncSidebarTabActive();
+
+    // Close drawer automatically on mobile
+    if (window.innerWidth <= 1024) {
+      document.getElementById("campus-sidebar")?.classList.remove("open");
+    }
 
     // Scroll to top of main content smoothly
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -44,24 +109,38 @@ const App = {
   // Switch Tab within Course (Reddit, Apuntes, Classroom, Meet, NotebookLM)
   switchTab(tabName) {
     this.state.currentTab = tabName;
+    this.syncSidebarTabActive();
     this.renderCurrentView();
+
+    if (window.innerWidth <= 1024) {
+      document.getElementById("campus-sidebar")?.classList.remove("open");
+    }
   },
 
-  // Renders the Course List in Sidebar
+  syncSidebarTabActive() {
+    const navItems = document.querySelectorAll("#sidebar-tabs-list .sidebar-nav-item");
+    navItems.forEach(item => {
+      item.classList.toggle("active", item.dataset.tab === this.state.currentTab);
+    });
+  },
+
+  // Renders the Course List in Sidebar (dot color by year, no year text badge)
   renderSidebarCourses() {
     const listEl = document.getElementById("sidebar-courses-list");
     if (!listEl) return;
 
-    const coursesArr = Object.values(CAMPUS_DATA.courses);
-    listEl.innerHTML = coursesArr.map(c => `
-      <li class="sidebar-course-item ${c.id === this.state.currentCourseId ? 'active' : ''}" onclick="App.switchCourse('${c.id}')">
-        <div class="course-item-left">
-          <span class="course-color-dot" style="background-color: ${c.themeColor};"></span>
-          <span class="course-name-text">${c.name}</span>
-        </div>
-        <span class="course-year-badge">${c.year.split('•')[0].trim()}</span>
-      </li>
-    `).join('');
+    const coursesArr = this.getVisibleCourses();
+    listEl.innerHTML = coursesArr.map(c => {
+      const dotColor = YEAR_DOT_COLORS[c.yearNumber] || c.themeColor || "#8430ce";
+      return `
+        <li class="sidebar-course-item ${c.id === this.state.currentCourseId ? 'active' : ''}" onclick="App.switchCourse('${c.id}')" title="${c.year}">
+          <div class="course-item-left">
+            <span class="course-color-dot" style="background-color: ${dotColor};"></span>
+            <span class="course-name-text">${c.name}</span>
+          </div>
+        </li>
+      `;
+    }).join('');
   },
 
   // Renders the Active View
@@ -71,6 +150,10 @@ const App = {
 
     const course = CAMPUS_DATA.courses[this.state.currentCourseId];
     if (!course) return;
+
+    if (!this.state.chatHistories[course.id]) {
+      this.state.chatHistories[course.id] = [];
+    }
 
     // Build the container HTML with Hero + Secondary Tabs + Tab Content
     let contentHtml = '';
@@ -568,3 +651,4 @@ Basándome en las **diapositivas oficiales del curso** y en los apuntes de la cl
 document.addEventListener("DOMContentLoaded", () => {
   App.init();
 });
+

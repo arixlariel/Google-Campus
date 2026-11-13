@@ -36,6 +36,13 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  padding: 4px 10px 4px 6px;
+  border-radius: var(--shape-corner-md);
+  transition: background-color var(--motion-duration-short);
+}
+.brand-wrapper:hover {
+  text-decoration: none;
+  background-color: var(--google-surface-hover);
 }
 
 .google-brand-text {
@@ -60,19 +67,32 @@
 .gdgoc-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   background-color: #f1f3f4;
-  padding: 3px 8px;
+  padding: 4px 12px 4px 6px;
   border-radius: var(--shape-corner-full);
-  font-size: 11px;
+  font-family: var(--font-family-google);
+  font-size: 12px;
   font-weight: 600;
   color: #3c4043;
-  border: 1px solid #e0e2ec;
+  border: 1px solid #dadce0;
+  text-decoration: none;
+  transition: all var(--motion-duration-short);
+  white-space: nowrap;
+}
+.gdgoc-badge:hover {
+  text-decoration: none;
+  background-color: var(--google-blue-surface);
+  border-color: #c2e7ff;
+  color: var(--google-blue-text);
 }
 
 .gdgoc-badge img {
-  height: 14px;
-  width: auto;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
 }
 
 /* SEARCH BAR */
@@ -226,17 +246,80 @@
 /* SIDEBAR DRAWER */
 .campus-sidebar {
   width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
   background: #ffffff;
   border-right: 1px solid var(--google-border);
   padding: 16px 12px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   overflow-y: auto;
-  max-height: calc(100vh - var(--topbar-height));
+  overflow-x: hidden;
+  height: calc(100vh - var(--topbar-height));
   position: sticky;
   top: var(--topbar-height);
-  transition: width 0.2s ease;
+  transition: width 0.25s var(--motion-easing-standard),
+              min-width 0.25s var(--motion-easing-standard),
+              padding 0.25s var(--motion-easing-standard),
+              opacity 0.2s ease,
+              left 0.25s var(--motion-easing-standard);
+}
+
+.campus-sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-program-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--google-surface-bg);
+  border: 1px solid var(--google-border);
+  border-radius: var(--shape-corner-md);
+  padding: 0 10px;
+  transition: border-color var(--motion-duration-short), background-color var(--motion-duration-short);
+}
+.sidebar-program-selector:hover {
+  background-color: var(--google-surface-hover);
+  border-color: #c4c7c5;
+}
+.sidebar-program-selector:focus-within {
+  border-color: var(--google-blue);
+  background-color: #ffffff;
+}
+.sidebar-program-selector .program-selector-icon {
+  font-size: 18px;
+  color: var(--google-blue);
+  pointer-events: none;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.sidebar-program-selector select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 9px 22px 9px 0;
+  font-family: var(--font-family-google);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--google-text-primary);
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+.sidebar-program-selector .program-chevron {
+  position: absolute;
+  right: 8px;
+  font-size: 18px;
+  color: var(--google-text-secondary);
+  pointer-events: none;
 }
 
 .sidebar-section-title {
@@ -285,8 +368,7 @@
 .sidebar-course-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border-radius: var(--shape-corner-md);
   cursor: pointer;
   transition: all 0.15s;
@@ -297,13 +379,16 @@
 }
 .sidebar-course-item.active {
   background-color: #e8f0fe;
+  color: #174ea6;
   font-weight: 600;
 }
 
 .course-item-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  min-width: 0;
+  width: 100%;
 }
 .course-color-dot {
   width: 10px;
@@ -312,42 +397,10 @@
   flex-shrink: 0;
 }
 .course-name-text {
-  font-size: 13px;
+  font-size: 13.5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 170px;
-}
-.course-year-badge {
-  font-size: 10px;
-  background: #f1f3f4;
-  padding: 2px 6px;
-  border-radius: 10px;
-  color: var(--google-text-secondary);
-}
-
-.sidebar-footer-card {
-  margin-top: auto;
-  background: linear-gradient(135deg, #f8fafd 0%, #edf2fc 100%);
-  border: 1px solid #d2e3fc;
-  border-radius: var(--shape-corner-lg);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.sidebar-footer-card h4 {
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #174ea6;
-}
-.sidebar-footer-card p {
-  font-size: 12px;
-  color: var(--google-text-secondary);
-  line-height: 1.4;
 }
 
 /* MAIN CONTENT AREA */
@@ -1376,9 +1429,19 @@
   .campus-sidebar {
     position: fixed;
     left: -280px;
+    top: var(--topbar-height);
     z-index: 500;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    opacity: 1;
+    pointer-events: auto;
   }
   .campus-sidebar.open {
     left: 0;
+    box-shadow: var(--elevation-3);
+  }
+  .campus-sidebar.collapsed {
+    left: -280px;
   }
 }
+

@@ -3,21 +3,44 @@
  * GDGoC (Google Developer Groups on Campus) Project Proposal
  */
 
+const YEAR_DOT_COLORS = {
+  1: "#34a853", // 1º Curso: Google Green
+  2: "#1a73e8", // 2º Curso: Google Blue
+  3: "#ea4335", // 3º Curso: Google Red
+  4: "#fbbc04", // 4º Curso: Google Yellow
+  0: "#8430ce"  // Cursillos / Talleres / Máster: Purple
+};
+
 const CAMPUS_DATA = {
   currentDegree: "Grado en Ingeniería Informática",
-  university: "Universidad Complutense de Madrid",
+  university: "Universidad de Huelva",
+  programs: [
+    { id: "ing-informatica", name: "Grado en Ing. Informática" },
+    { id: "master-ia", name: "Máster en Ciencia de Datos e IA" },
+    { id: "cursillos-campus", name: "Cursillos y Talleres (GDGoC)" },
+    { id: "all", name: "Todas mis asignaturas" }
+  ],
   currentUser: {
     name: "Ariel Bustillo León",
     role: "Estudiante • GDGoC Lead",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
     campusPoints: 480,
-    enrolledCourses: ["fundamentos-programacion", "estructuras-datos", "inteligencia-artificial"]
+    enrolledCourses: [
+      "fundamentos-programacion",
+      "estructuras-datos",
+      "inteligencia-artificial",
+      "ciberseguridad-auditoria",
+      "sistemas-multiagente",
+      "taller-cloud-gemini"
+    ]
   },
 
-  // 3 Cursos de ejemplo correspondientes a 3 años académicos distintos
+  // Cursos de ejemplo across 4 cursos + Máster + Cursillos
   courses: {
     "fundamentos-programacion": {
       id: "fundamentos-programacion",
+      programId: "ing-informatica",
+      yearNumber: 1,
       code: "FP-101",
       year: "1º Curso • Grado en Informática",
       semester: "1º Cuatrimestre",
@@ -176,6 +199,8 @@ const CAMPUS_DATA = {
 
     "estructuras-datos": {
       id: "estructuras-datos",
+      programId: "ing-informatica",
+      yearNumber: 2,
       code: "EDA-202",
       year: "2º Curso • Grado en Informática",
       semester: "1º Cuatrimestre",
@@ -264,7 +289,7 @@ const CAMPUS_DATA = {
           userVoted: 0,
           commentsCount: 9,
           comments: [
-            { author: "Lucia_Matricula", time: "Hace 2 horas", text: "En la Complutense usamos siempre `altura(hijo_derecho) - altura(hijo_izquierdo)`. Si da +2 requiere rotación a la izquierda.", upvotes: 24 }
+            { author: "Lucia_Matricula", time: "Hace 2 horas", text: "En la UHU usamos siempre `altura(hijo_derecho) - altura(hijo_izquierdo)`. Si da +2 requiere rotación a la izquierda.", upvotes: 24 }
           ]
         },
         {
@@ -376,6 +401,8 @@ const CAMPUS_DATA = {
 
     "inteligencia-artificial": {
       id: "inteligencia-artificial",
+      programId: "ing-informatica",
+      yearNumber: 3,
       code: "IAML-301",
       year: "3º Curso • Grado en Informática",
       semester: "1º Cuatrimestre",
@@ -383,10 +410,10 @@ const CAMPUS_DATA = {
       shortName: "IA & ML",
       professor: "Dra. Elena Ramos Santamaría",
       department: "Inteligencia Artificial e Informática Gráfica",
-      themeColor: "#7c4dff",
-      accentBg: "#f3e8fd",
-      badgeColor: "#6200ea",
-      coverGradient: "linear-gradient(135deg, #4527a0 0%, #7c4dff 100%)",
+      themeColor: "#ea4335",
+      accentBg: "#fce8e6",
+      badgeColor: "#c5221f",
+      coverGradient: "linear-gradient(135deg, #c5221f 0%, #ea4335 100%)",
       description: "Búsqueda informada y heurísticas (A*, Minimax, Alpha-Beta), Redes Neuronales Profundas, Visión por Computador, Transformers, Fine-Tuning con modelos de Google Gemini y Ética en IA.",
       stats: { students: 86, notesCount: 52, forumPosts: 156, nextClass: "Jueves 11:30" },
       meetActive: false,
@@ -522,6 +549,399 @@ const CAMPUS_DATA = {
           { number: "Tema 4", title: "Redes Neuronales Artificiales y Retropropagación", slidesCount: 84 }
         ]
       }
+    },
+
+    "ciberseguridad-auditoria": {
+      id: "ciberseguridad-auditoria",
+      programId: "ing-informatica",
+      yearNumber: 4,
+      code: "CIB-404",
+      year: "4º Curso • Grado en Informática",
+      semester: "1º Cuatrimestre",
+      name: "Ciberseguridad y Auditoría Web",
+      shortName: "Ciber 404",
+      professor: "Dr. Pablo Navarro Ruiz",
+      department: "Tecnologías de la Información",
+      themeColor: "#fbbc04",
+      accentBg: "#fef7e0",
+      badgeColor: "#b06000",
+      coverGradient: "linear-gradient(135deg, #b06000 0%, #f29900 100%)",
+      description: "Pentesting ético, OWASP Top 10, criptografía aplicada, seguridad en Cloud (GCP IAM), análisis forense y auditoría de redes corporativas.",
+      stats: { students: 64, notesCount: 29, forumPosts: 78, nextClass: "Miércoles 18:00" },
+      meetActive: false,
+      meetUrl: "https://meet.google.com/cib-uhu-404",
+      agents: [
+        {
+          id: "tutor-cib",
+          name: "Agente Auditor OWASP & Pentesting",
+          role: "Especialista en vulnerabilidades web y mitigación",
+          avatarIcon: "security",
+          color: "#f29900",
+          description: "Analiza configuraciones, explica inyecciones SQL/XSS de forma defensiva y repasa los laboratorios CTF de clase.",
+          systemPrompt: "Eres el tutor de Ciberseguridad enfocado en defensa y buenas prácticas."
+        }
+      ],
+      quickPrompts: [
+        "¿Cómo mitigar ataques XSS e Inyección SQL en una API REST?",
+        "Diferencias entre cifrado simétrico AES y asimétrico RSA/ECC",
+        "Genera un reto CTF rápido sobre cabeceras HTTP seguras"
+      ],
+      forumPosts: [
+        {
+          id: "cib-post-1",
+          author: "Sec_UHU",
+          authorRole: "Estudiante 4º",
+          authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
+          timeAgo: "Hace 2 horas",
+          flair: "MEME",
+          flairColor: "#ea4335",
+          title: "Yo intentando encontrar la flag del CTF de la práctica 3 mientras Wireshark captura 40.000 paquetes por segundo",
+          content: "Mi filtro `http.request.method == POST` me ha salvado la vida y el aprobado.",
+          votes: 115,
+          userVoted: 0,
+          commentsCount: 11,
+          comments: [
+            { author: "Dr. Navarro", isTeacher: true, time: "Hace 1 hora", text: "Recordad usar `tcp.stream eq X` para seguir la conversación completa sin perderos entre el ruido de la red.", upvotes: 34 }
+          ]
+        }
+      ],
+      apuntes: [
+        {
+          id: "cib-apunte-1",
+          title: "Cheat Sheet OWASP Top 10 + Comandos Nmap & Wireshark para el Parcial",
+          author: "Nuria_Sec (4º Curso)",
+          authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
+          downloads: 1340,
+          rating: 4.92,
+          reviewsCount: 64,
+          pages: 15,
+          verified: true,
+          badge: "Top 4º",
+          date: "Noviembre 2026",
+          tags: ["OWASP", "CTF", "Redes", "Criptografía"],
+          previewText: "Resumen visual de vulnerabilidades web, ejemplos de parches en código y comandos esenciales de auditoría."
+        }
+      ],
+      classroom: {
+        announcements: [
+          {
+            title: "Laboratorio CTF abierto hasta el domingo",
+            date: "11 de Noviembre",
+            author: "Dr. Pablo Navarro",
+            content: "Ya tenéis el entorno aislado desplegado en Google Cloud. Subid las flags capturadas antes del domingo."
+          }
+        ],
+        assignments: [
+          {
+            id: "cib-assign-1",
+            title: "Auditoría de Vulnerabilidades OWASP sobre App de Prueba",
+            dueDate: "Domingo, 23:59",
+            status: "Pendiente",
+            statusColor: "#b06000",
+            grade: "-- / 10",
+            feedback: "Entrega del informe técnico en PDF por Classroom."
+          }
+        ],
+        modules: [
+          { number: "Tema 1", title: "Fundamentos de Criptografía Aplicada y PKI", slidesCount: 48 },
+          { number: "Tema 2", title: "Seguridad Web y OWASP Top 10", slidesCount: 72 },
+          { number: "Tema 3", title: "Auditoría de Redes y Análisis Forense", slidesCount: 55 }
+        ]
+      }
+    },
+
+    "sistemas-multiagente": {
+      id: "sistemas-multiagente",
+      programId: "master-ia",
+      yearNumber: 1,
+      code: "MIA-502",
+      year: "Máster en Ciencia de Datos e IA",
+      semester: "1º Cuatrimestre",
+      name: "Sistemas Multiagente & LLMs",
+      shortName: "LLMs Máster",
+      professor: "Dra. Elena Ramos Santamaría",
+      department: "Inteligencia Artificial",
+      themeColor: "#34a853",
+      accentBg: "#e6f4ea",
+      badgeColor: "#137333",
+      coverGradient: "linear-gradient(135deg, #0b8043 0%, #34a853 100%)",
+      description: "Diseño de arquitecturas RAG, orquestación de agentes autónomos con herramientas (MCP, Tool Use), evaluación de modelos Gemini y despliegue en Vertex AI.",
+      stats: { students: 38, notesCount: 19, forumPosts: 46, nextClass: "Hoy 19:00" },
+      meetActive: false,
+      meetUrl: "https://meet.google.com/mia-agents-502",
+      agents: [
+        {
+          id: "tutor-mia",
+          name: "Agente Arquitecto Vertex AI & RAG",
+          role: "Especialista en evaluación de agentes y embeddings",
+          avatarIcon: "hub",
+          color: "#34a853",
+          description: "Resuelve dudas sobre chunking, reranking, function calling y trazabilidad en sistemas multiagente.",
+          systemPrompt: "Eres el asistente de posgrado para Sistemas Multiagente."
+        }
+      ],
+      quickPrompts: [
+        "¿Cuándo usar RAG híbrido frente a Fine-Tuning?",
+        "Explica cómo reducir alucinaciones en pipelines multiagente",
+        "Compara estrategias de chunking semántico vs tamaño fijo"
+      ],
+      forumPosts: [
+        {
+          id: "mia-post-1",
+          author: "Carlos_Research",
+          authorRole: "Alumno Máster",
+          authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80",
+          timeAgo: "Hace 4 horas",
+          flair: "DUDA",
+          flairColor: "#1a73e8",
+          title: "¿Alguien ha probado ya el SDK de Gemini con Vertex AI para el proyecto de agentes?",
+          content: "Estamos midiendo latencias entre streaming y respuesta completa con tool calling paralelo. ¿Qué métricas de evaluación estáis usando?",
+          votes: 48,
+          userVoted: 0,
+          commentsCount: 7,
+          comments: [
+            { author: "Dra. Ramos", isTeacher: true, time: "Hace 2 horas", text: "Subí una plantilla de evaluación con LLM-as-a-judge en el Tema 2 del Classroom.", upvotes: 19 }
+          ]
+        }
+      ],
+      apuntes: [
+        {
+          id: "mia-apunte-1",
+          title: "Patrones de Diseño en Agentes Autónomos (ReAct, Plan-and-Solve, Reflection)",
+          author: "Grupo Investigación UHU",
+          authorAvatar: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&auto=format&fit=crop&q=80",
+          downloads: 620,
+          rating: 4.95,
+          reviewsCount: 31,
+          pages: 24,
+          verified: true,
+          badge: "Máster",
+          date: "Noviembre 2026",
+          tags: ["RAG", "Agentes", "Gemini", "Vertex AI"],
+          previewText: "Comparativa práctica de patrones agénticos con diagramas de flujo y ejemplos de implementación."
+        }
+      ],
+      classroom: {
+        announcements: [
+          {
+            title: "Seminario invitado de Google Cloud AI este viernes",
+            date: "Hoy, 09:00",
+            author: "Dra. Elena Ramos",
+            content: "Contaremos con un Developer Advocate de Google para hablar sobre arquitecturas agénticas en producción."
+          }
+        ],
+        assignments: [
+          {
+            id: "mia-assign-1",
+            title: "Paper Review + Demo de Agente RAG Evaluado",
+            dueDate: "28 Nov, 23:59",
+            status: "En Progreso",
+            statusColor: "#1a73e8",
+            grade: "-- / 10",
+            feedback: "Pendiente de entrega."
+          }
+        ],
+        modules: [
+          { number: "Tema 1", title: "Fundamentos de LLMs y Function Calling", slidesCount: 50 },
+          { number: "Tema 2", title: "Sistemas RAG Avanzados y Evaluación", slidesCount: 64 }
+        ]
+      }
+    },
+
+    "taller-cloud-gemini": {
+      id: "taller-cloud-gemini",
+      programId: "cursillos-campus",
+      yearNumber: 0,
+      code: "GDG-CLOUD",
+      year: "Cursillo • GDGoC UHU",
+      semester: "Edición Otoño 2026",
+      name: "Taller Cloud & Gemini API",
+      shortName: "Cloud & Gemini",
+      professor: "Equipo GDGoC UHU",
+      department: "Google Developer Group on Campus UHU",
+      themeColor: "#8430ce",
+      accentBg: "#f3e8fd",
+      badgeColor: "#681da8",
+      coverGradient: "linear-gradient(135deg, #681da8 0%, #8430ce 100%)",
+      description: "Cursillo práctico abierto a toda la universidad: despliega tu primera app con Cloud Run, Firebase y la API de Gemini. ¡Con certificado Open Badge oficial de gdguhu.com!",
+      stats: { students: 210, notesCount: 14, forumPosts: 63, nextClass: "Viernes 17:00 (ETSI)" },
+      meetActive: true,
+      meetUrl: "https://meet.google.com/gdgoc-uhu-cloud",
+      agents: [
+        {
+          id: "tutor-gdg-cloud",
+          name: "Asistente de Workshop GDGoC UHU",
+          role: "Guía paso a paso del taller y créditos Cloud",
+          avatarIcon: "cloud",
+          color: "#8430ce",
+          description: "Te ayuda con errores de Docker, Cloud Run, variables de entorno y obtención de tu Open Badge en gdguhu.com.",
+          systemPrompt: "Ayuda a los asistentes del cursillo de GDGoC UHU a completar su proyecto."
+        }
+      ],
+      quickPrompts: [
+        "¿Cómo canjeo los créditos gratuitos de Google Cloud del taller?",
+        "Pasos para desplegar una web estática o API en Cloud Run",
+        "¿Cómo consigo el certificado Open Badge en gdguhu.com?"
+      ],
+      forumPosts: [
+        {
+          id: "gdg-post-1",
+          author: "Ariel_GDGoC_UHU",
+          authorRole: "GDGoC Lead",
+          authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+          timeAgo: "Hace 3 horas",
+          flair: "EVENTO GDGOC",
+          flairColor: "#34a853",
+          title: "🍕 ¡Este viernes Taller en la ETSI + Pizza y Open Badges verificables en gdguhu.com!",
+          content: "No hace falta experiencia previa. Traed el portátil cargado y os lleváis una app desplegada en Google Cloud y vuestra insignia digital oficial de GDGoC UHU.",
+          votes: 174,
+          userVoted: 1,
+          commentsCount: 19,
+          comments: [
+            { author: "Laura_1o", time: "Hace 2 horas", text: "¡Soy de primero y es mi primer taller, qué ganas!", upvotes: 22 }
+          ]
+        }
+      ],
+      apuntes: [
+        {
+          id: "gdg-apunte-1",
+          title: "Guía Rápida del Taller: CLI de gcloud, Cloud Run y Gemini Starter Kit",
+          author: "GDGoC UHU Tech Team",
+          authorAvatar: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&auto=format&fit=crop&q=80",
+          downloads: 890,
+          rating: 5.0,
+          reviewsCount: 54,
+          pages: 12,
+          verified: true,
+          badge: "Oficial GDGoC UHU",
+          date: "Noviembre 2026",
+          tags: ["Cloud Run", "Gemini API", "Docker", "Open Badges"],
+          previewText: "Todos los comandos listos para copiar y pegar durante el taller presencial y online."
+        }
+      ],
+      classroom: {
+        announcements: [
+          {
+            title: "Acreditaciones digitales listas tras completar el reto",
+            date: "Hoy, 12:00",
+            author: "Equipo GDGoC UHU",
+            content: "Al finalizar el despliegue podrás reclamar tu certificado verificable directamente en gdguhu.com."
+          }
+        ],
+        assignments: [
+          {
+            id: "gdg-assign-1",
+            title: "Reto Final: Tu propia App con Gemini API desplegada",
+            dueDate: "Próximo Miércoles",
+            status: "Abierto",
+            statusColor: "#137333",
+            grade: "Open Badge",
+            feedback: "Sube la URL de tu despliegue para recibir tu certificado."
+          }
+        ],
+        modules: [
+          { number: "Sesión 1", title: "Configuración de Google Cloud & API Key de Gemini", slidesCount: 28 },
+          { number: "Sesión 2", title: "Despliegue Serverless con Cloud Run", slidesCount: 34 }
+        ]
+      }
+    },
+
+    "bootcamp-flutter": {
+      id: "bootcamp-flutter",
+      programId: "cursillos-campus",
+      yearNumber: 0,
+      code: "GDG-FLUT",
+      year: "Cursillo • GDGoC UHU",
+      semester: "Intensivo",
+      name: "Bootcamp Flutter & Firebase",
+      shortName: "Flutter",
+      professor: "Mentores Mobile GDGoC UHU",
+      department: "Google Developer Group on Campus UHU",
+      themeColor: "#8430ce",
+      accentBg: "#f3e8fd",
+      badgeColor: "#681da8",
+      coverGradient: "linear-gradient(135deg, #681da8 0%, #8430ce 100%)",
+      description: "Aprende a crear apps multiplataforma Android, iOS y Web con Material Design 3 y autenticación en tiempo real con Firebase.",
+      stats: { students: 165, notesCount: 21, forumPosts: 52, nextClass: "Sábado 10:30" },
+      meetActive: false,
+      meetUrl: "https://meet.google.com/gdgoc-uhu-flutter",
+      agents: [
+        {
+          id: "tutor-flutter",
+          name: "Mentor Dart & Widgets Material 3",
+          role: "Especialista en UI Flutter y Firebase Auth",
+          avatarIcon: "smartphone",
+          color: "#8430ce",
+          description: "Resuelve errores de árbol de widgets, StatefulWidget vs Riverpod y reglas de Firestore.",
+          systemPrompt: "Eres un mentor amigable del bootcamp de Flutter de GDGoC UHU."
+        }
+      ],
+      quickPrompts: [
+        "Diferencia práctica entre StatelessWidget y StatefulWidget",
+        "¿Cómo conectar Flutter con Firebase Auth en 5 minutos?",
+        "Ejemplo de tarjeta Material Design 3 limpia en Dart"
+      ],
+      forumPosts: [
+        {
+          id: "flt-post-1",
+          author: "Marta_Mobile",
+          authorRole: "Participante",
+          authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
+          timeAgo: "Ayer",
+          flair: "PROYECTO",
+          flairColor: "#8430ce",
+          title: "¡Mi primer Hot Reload funcionando en el móvil físico! Qué maravilla",
+          content: "Vengo de compilar proyectos pesados en C y ver que la UI cambia en 0.2 segundos sin reiniciar la app es magia pura.",
+          votes: 92,
+          userVoted: 0,
+          commentsCount: 14,
+          comments: [
+            { author: "Mentor_GDG", time: "Ayer", text: "¡Es el superpoder de Flutter! En la sesión 2 le metemos Firebase en tiempo real.", upvotes: 18 }
+          ]
+        }
+      ],
+      apuntes: [
+        {
+          id: "flt-apunte-1",
+          title: "Catálogo de Widgets Esenciales & Plantilla Material 3",
+          author: "GDGoC UHU Mobile",
+          authorAvatar: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&auto=format&fit=crop&q=80",
+          downloads: 740,
+          rating: 4.9,
+          reviewsCount: 41,
+          pages: 16,
+          verified: true,
+          badge: "Starter Pack",
+          date: "Octubre 2026",
+          tags: ["Flutter", "Dart", "Firebase", "UI"],
+          previewText: "Esquema visual de Row, Column, Stack, ListView y navegación en Flutter."
+        }
+      ],
+      classroom: {
+        announcements: [
+          {
+            title: "Instalación previa de Flutter SDK recomendada antes del sábado",
+            date: "9 de Noviembre",
+            author: "Mentores GDGoC UHU",
+            content: "Ejecutad `flutter doctor` en vuestra terminal y si da algún fallo preguntadlo en el foro antes de la sesión."
+          }
+        ],
+        assignments: [
+          {
+            id: "flt-assign-1",
+            title: "Mini-App: Lista de Tareas con Firestore",
+            dueDate: "Siguiente Semana",
+            status: "Abierto",
+            statusColor: "#137333",
+            grade: "Open Badge",
+            feedback: "Entrega tu repo de GitHub."
+          }
+        ],
+        modules: [
+          { number: "Módulo 1", title: "Dart Moderno y Árbol de Widgets", slidesCount: 36 },
+          { number: "Módulo 2", title: "Estado y Conexión con Firebase", slidesCount: 44 }
+        ]
+      }
     }
   },
 
@@ -620,3 +1040,4 @@ donde $h^*(n)$ es el coste real mínimo desde el estado $n$ hasta el estado obje
 > 📌 **Fuente en el Material del Curso:**
 > *[Diapositivas Tema 2: Búsqueda Heurística, Dra. Elena Ramos, pág. 35]*`
 };
+

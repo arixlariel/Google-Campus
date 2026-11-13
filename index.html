@@ -22,7 +22,7 @@
     <!-- TOP GOOGLE APP BAR -->
     <header class="campus-header">
       <div class="header-left">
-        <button class="g-icon-btn" id="menu-toggle-btn" aria-label="Menú principal">
+        <button class="g-icon-btn" id="menu-toggle-btn" onclick="App.toggleSidebar()" aria-label="Mostrar u ocultar menú lateral" aria-expanded="true" title="Mostrar u ocultar menú lateral">
           <span class="material-symbols-rounded">menu</span>
         </button>
 
@@ -34,10 +34,10 @@
           </div>
         </a>
 
-        <div class="gdgoc-badge" title="Propuesta oficial de Google Developer Groups on Campus">
-          <img src="assets/icons/gdgoc-logo.svg" alt="GDGoC">
-          <span>GDGoC</span>
-        </div>
+        <a href="https://gdguhu.com" target="_blank" rel="noopener noreferrer" class="gdgoc-badge" title="Visitar web oficial de GDGoC UHU (gdguhu.com)">
+          <img src="assets/icons/gdgoc-uhu-logo.webp" alt="Logo GDGoC UHU">
+          <span>GDGoC UHU</span>
+        </a>
       </div>
 
       <!-- CENTER SEARCH BAR -->
@@ -112,63 +112,56 @@
     <div class="campus-body">
       <!-- LEFT SIDEBAR -->
       <aside class="campus-sidebar" id="campus-sidebar">
-        <!-- Degree Header -->
-        <div style="padding: 0 12px; margin-bottom: 4px;">
-          <div style="font-size: 12px; color: #5f6368; font-weight: 500;">Titulación Actual:</div>
-          <div style="font-size: 14px; font-weight: 700; color: #202124;">Grado en Ing. Informática</div>
+        <!-- Program / Degree / Workshop Selector -->
+        <div class="sidebar-program-selector" title="Cambiar entre titulaciones, másteres o cursillos">
+          <span class="material-symbols-rounded program-selector-icon">school</span>
+          <select id="program-select" onchange="App.switchProgram(this.value)" aria-label="Seleccionar titulación o cursillo">
+            <option value="ing-informatica">Grado en Ing. Informática</option>
+            <option value="master-ia">Máster en Ciencia de Datos e IA</option>
+            <option value="cursillos-campus">Cursillos y Talleres (GDGoC)</option>
+            <option value="all">Todas mis asignaturas</option>
+          </select>
+          <span class="material-symbols-rounded program-chevron">expand_more</span>
         </div>
 
-        <hr style="border:none; border-top: 1px solid var(--google-divider); margin: 4px 0;">
+        <hr style="border:none; border-top: 1px solid var(--google-divider); margin: 2px 0;">
 
-        <!-- Main Navigation Links -->
-        <nav aria-label="Navegación principal">
-          <div class="sidebar-section-title">Comunidad Universitaria</div>
-          <ul class="sidebar-nav-list">
-            <li class="sidebar-nav-item active" onclick="App.switchTab('reddit')">
-              <span class="material-symbols-rounded">forum</span>
-              <span>Foro & Reddit</span>
-            </li>
-            <li class="sidebar-nav-item" onclick="App.switchTab('apuntes')">
-              <span class="material-symbols-rounded">description</span>
-              <span>Apuntes Wuolah</span>
-            </li>
-            <li class="sidebar-nav-item" onclick="App.switchTab('classroom')">
-              <span class="material-symbols-rounded">school</span>
-              <span>Classroom LMS</span>
-            </li>
-            <li class="sidebar-nav-item" onclick="App.switchTab('meet')">
-              <span class="material-symbols-rounded">videocam</span>
-              <span>Aulas Google Meet</span>
-            </li>
-            <li class="sidebar-nav-item" onclick="App.switchTab('notebook')">
-              <span class="material-symbols-rounded">neurology</span>
-              <span>NotebookLM Studio</span>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- Course Selector across 3 different years -->
+        <!-- Course Selector -->
         <div>
-          <div class="sidebar-section-title" style="display:flex; justify-content:space-between; align-items:center;">
-            <span>Mis Asignaturas (3 Años)</span>
-            <span class="material-symbols-rounded" style="font-size: 16px; cursor:pointer;" title="Añadir curso">add</span>
+          <div class="sidebar-section-title">
+            <span>Mis Asignaturas</span>
           </div>
           <ul class="sidebar-nav-list" id="sidebar-courses-list">
             <!-- Dynamic courses rendered by App.renderSidebarCourses() -->
           </ul>
         </div>
 
-        <!-- GDGoC Endorsement Card -->
-        <div class="sidebar-footer-card">
-          <h4>
-            <span class="material-symbols-rounded" style="font-size: 18px;">lightbulb</span>
-            <span>GDGoC Innovation Lab</span>
-          </h4>
-          <p>Proyecto diseñado para transformar Google Classroom en el hub social y académico definitivo para universidades.</p>
-          <button class="g-btn g-btn-tonal" style="padding: 4px 10px; font-size: 12px; width: 100%;" onclick="App.openPitchModal()">
-            Explorar Propuesta
-          </button>
-        </div>
+        <!-- Main Navigation Links -->
+        <nav aria-label="Navegación principal">
+          <div class="sidebar-section-title">Comunidad Universitaria</div>
+          <ul class="sidebar-nav-list" id="sidebar-tabs-list">
+            <li class="sidebar-nav-item active" data-tab="reddit" onclick="App.switchTab('reddit')">
+              <span class="material-symbols-rounded">forum</span>
+              <span>Foro & Reddit</span>
+            </li>
+            <li class="sidebar-nav-item" data-tab="apuntes" onclick="App.switchTab('apuntes')">
+              <span class="material-symbols-rounded">description</span>
+              <span>Apuntes Wuolah</span>
+            </li>
+            <li class="sidebar-nav-item" data-tab="classroom" onclick="App.switchTab('classroom')">
+              <span class="material-symbols-rounded">school</span>
+              <span>Classroom LMS</span>
+            </li>
+            <li class="sidebar-nav-item" data-tab="meet" onclick="App.switchTab('meet')">
+              <span class="material-symbols-rounded">videocam</span>
+              <span>Aulas Google Meet</span>
+            </li>
+            <li class="sidebar-nav-item" data-tab="notebook" onclick="App.switchTab('notebook')">
+              <span class="material-symbols-rounded">neurology</span>
+              <span>NotebookLM Studio</span>
+            </li>
+          </ul>
+        </nav>
       </aside>
 
       <!-- MAIN CONTENT CONTAINER -->
@@ -403,3 +396,4 @@
   <script src="js/app.js"></script>
 </body>
 </html>
+
