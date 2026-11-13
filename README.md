@@ -1,16 +1,11 @@
-# Google Campus • Next Gen School!
-> **Prototipo desarrollado en el Club de Programación del Google Developer Group on Campus Universidad de Huelva**
+# 🎓 Google Campus • Next Gen School!
 
----
+Actualmente, **Google Classroom** es la herramienta académica más extendida en institutos y universidades a lo largo del globo. Aún así, no se ha actualizado con las nuevas funcionalidades de IA ni integraciones que hoy en día ofrece la empresa:
+1. **La comunidad vive fuera:** Los debates sobre ejercicios y exámenes se van a foros como Discord o WhatsApp, y los correos tardan demasiado en recibir respuesta. Parte de este tráfico estaría mucho mejor localizado dentro de las propias aulas virtuales, una funcionalidad que ya existe, pero que no despega debido a que los estudiantes buscan herramientas más completas como Reddit
+2. **Los apuntes se fragmentan:** Para conseguir exámenes resueltos o resúmenes, los alumnos recurren a plataformas de terceros que les ofrecen monetización como StuDocu o Wuolah
+3. **La IA no conoce el curso:** Los estudiantes consultan dudas en LLMs de uso general que no tienen acceso al temario ni el estilo del profesor. Para conseguir esto es necesario descargar manualmente todo el material y preparar un NotebookLM personalizado de cada asignatura que los alumnos deberán ir actualizando conforme los profesores publican nuevo material, cuando esto debería manejarse directamente desde la aplicación
 
-## El aula redefinida
-
-Actualmente, **Google Classroom** es la herramienta académica más extendida en colegios, institutos y universidades a lo largo y ancho del mundo. Aún así, no se ha actualizado con las nuevas funcionalidades de IA ni integraciones que hoy en día ofrece la empresa:
-1. **La comunidad vive fuera:** Los debates sobre ejercicios y exámenes se van a foros como Discord, Reddit o WhatsApp —y los correos tardan demasiado en recibir respuesta. Parte de este tráfico estaría mucho mejor localizado dentro de las propias aulas virtuales. Esta funcionalidad ya existe, pero creemos que no despega debido a que los estudiantes buscan herramientas más completas como Reddit
-2. **Los apuntes se fragmentan:** Para conseguir exámenes resueltos, esquemas o chuletas, los alumnos recurren a plataformas monetizadas de terceros tipo StuDocu o Wuolah.
-3. **La IA no conoce el curso:** Los estudiantes consultan dudas en LLMs generalistas que no tienen acceso al temario ni el estilo del profesor. Para conseguir esto es necesario descargar todo el material y preparar un NotebookLM personalizado para cada asignatura que los alumnos deben ir actualizando conforme los profesores publican material, cuando esto podría manejarlo directamente el centro desde la aplicación
-
-**Google Campus** fusiona todo el ecosistema universitario en una única plataforma diseñada bajo las **Google Brand Guidelines** y la filosofía de **Material Design 3**. Está diseñado como una propuesta de producto a Google, o como producto propio tras un rebranding si no se aceptara
+**Google Campus** fusiona todo el ecosistema universitario en una única plataforma diseñada bajo las **Google Brand Guidelines** y la filosofía de **Material Design 3**. Está ideada como propuesta de producto a Google, o como producto propio tras un rebranding si no se aceptara
 
 ---
 
@@ -59,3 +54,5 @@ El prototipo incluye navegación funcional e inmediata entre 3 asignaturas de 3 
 | **1º Curso** | Fundamentos de Programación | `FP-101` | Dra. Carmen Delgado | Punteros en C, Recursividad y Modularidad |
 | **2º Curso** | Estructuras de Datos y Algoritmos | `EDA-202` | Dr. Javier Morales | Árboles AVL, Grafos, Dijkstra y Complejidad |
 | **3º Curso** | Inteligencia Artificial y Machine Learning | `IAML-301` | Dra. Elena Ramos | Heurísticas A*, PyTorch, Transformers y LLMs |
+
+> **Prototipo desarrollado en el Club de Programación del Google Developer Group on Campus Universidad de Huelva**
