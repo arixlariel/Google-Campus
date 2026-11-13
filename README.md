@@ -45,14 +45,12 @@ Actualmente, **Google Classroom** es la herramienta académica más extendida en
 
 ---
 
-## Asignaturas de Ejemplo Incluidas en el Prototipo
+## 📒 Asignaturas de ejemplo
 
-El prototipo incluye navegación funcional e inmediata entre 3 asignaturas de 3 cursos universitarios diferentes:
-
-| Curso | Asignatura | Código | Profesor / Cátedra | Tema Principal |
+| Curso | Asignatura | Código | Profesor | Resumen |
 | :--- | :--- | :--- | :--- | :--- |
-| **1º Curso** | Fundamentos de Programación | `FP-101` | Dra. Carmen Delgado | Punteros en C, Recursividad y Modularidad |
-| **2º Curso** | Estructuras de Datos y Algoritmos | `EDA-202` | Dr. Javier Morales | Árboles AVL, Grafos, Dijkstra y Complejidad |
-| **3º Curso** | Inteligencia Artificial y Machine Learning | `IAML-301` | Dra. Elena Ramos | Heurísticas A*, PyTorch, Transformers y LLMs |
+| **1** | Fundamentos de Programación | `FP-101` | Dra. Carmen Delgado | Punteros en C, recursividad y modularidad |
+| **2** | Estructuras de Datos y Algoritmos | `EDA-202` | Profesor Javier Morales | Árboles AVL, grafos, Dijkstra y complejidad |
+| **3** | Inteligencia Artificial y Machine Learning | `IAML-301` | Dra. Elena Ramos | Heurísticas A*, PyTorch, Transformers y LLMs |
 
 > **Prototipo desarrollado en el Club de Programación del Google Developer Group on Campus Universidad de Huelva**
